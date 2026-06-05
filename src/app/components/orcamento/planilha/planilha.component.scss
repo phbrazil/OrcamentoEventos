@@ -1,0 +1,190 @@
+.planilha-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  width: 100%;
+  margin-bottom: 24px;
+}
+
+.sheet-card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  background: #ffffff;
+  border: 1px solid #d9d9d9;
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+.sheet-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.sheet-card-header h3 {
+  margin: 0 0 4px;
+  font-size: 1.05rem;
+  color: #1f3a5d;
+}
+
+.sheet-description {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #5b6574;
+}
+
+.sheet-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.ag-theme-alpine {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.new-column-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.new-column-modal {
+  width: min(420px, calc(100% - 32px));
+  padding: 24px;
+  border-radius: 14px;
+  background: #ffffff;
+  box-shadow: 0 20px 80px rgba(0, 0, 0, 0.18);
+}
+
+.new-column-modal h2 {
+  margin: 0 0 16px;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.modal-sheet-name {
+  margin: 0 0 16px;
+  color: #4a5568;
+  font-size: 0.95rem;
+}
+
+.modal-label {
+  display: grid;
+  gap: 8px;
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.new-column-modal input,
+.new-column-modal select {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #cfcfcf;
+  border-radius: 10px;
+  font-size: 1rem;
+  outline: none;
+  background: #fafbfc;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.new-column-modal input:focus,
+.new-column-modal select:focus {
+  border-color: #7ca8ff;
+  box-shadow: 0 0 0 4px rgba(124, 168, 255, 0.14);
+  background: #ffffff;
+}
+
+.new-column-modal select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image:
+    linear-gradient(45deg, transparent 50%, #6c7dff 50%),
+    linear-gradient(135deg, #6c7dff 50%, transparent 50%);
+  background-position:
+    calc(100% - 20px) calc(50% - 2px),
+    calc(100% - 14px) calc(50% - 2px);
+  background-size:
+    6px 6px,
+    6px 6px;
+  background-repeat: no-repeat;
+  padding-right: 40px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.new-column-modal button {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.new-column-modal button.confirm {
+  background: #1f7bff;
+  color: #fff;
+}
+
+.new-column-modal button.cancel {
+  background: #f4f6f8;
+  color: #333;
+}
+
+.modal-error {
+  margin: 10px 0 0;
+  color: #b00020;
+  font-size: 0.9rem;
+}
+
+.button {
+  padding: 8px 16px;
+  border: 1px solid #cfcfcf;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #333333;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+@media (max-width: 1160px) {
+  .planilha-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .planilha-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .sheet-card-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .sheet-actions {
+    justify-content: flex-start;
+  }
+}

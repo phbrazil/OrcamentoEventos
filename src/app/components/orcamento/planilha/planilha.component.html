@@ -1,0 +1,70 @@
+<div class="planilha-grid">
+  <div class="sheet-card" *ngFor="let sheet of sheets; let i = index">
+    <div class="sheet-card-header">
+      <div>
+        <h3>{{ sheet.name }}</h3>
+        <p class="sheet-description">
+          Controle de linha e coluna para cada planilha
+        </p>
+      </div>
+      <div class="sheet-actions">
+        <button type="button" (click)="addRow(sheet)" class="button">
+          Adicionar Linha
+        </button>
+        <button type="button" (click)="deleteRow(sheet)" class="button">
+          Remover Linha
+        </button>
+        <button type="button" (click)="openNewColumnModal(i)" class="button">
+          Adicionar Coluna
+        </button>
+        <button type="button" (click)="deleteColumn(sheet)" class="button">
+          Remover Coluna
+        </button>
+      </div>
+    </div>
+
+    <ag-grid-angular
+      class="ag-theme-alpine"
+      style="width: 100%; height: 420px"
+      [columnDefs]="sheet.columnDefs"
+      [rowData]="sheet.rowData"
+    >
+    </ag-grid-angular>
+  </div>
+</div>
+
+<div
+  *ngIf="isNewColumnModalOpen"
+  class="new-column-modal-backdrop"
+  (click)="closeNewColumnModal()"
+>
+  <div class="new-column-modal" (click)="$event.stopPropagation()">
+    <h2>Nova Categoria</h2>
+    <p class="modal-sheet-name">
+      Adicionar categoria em
+      <strong>{{ sheets[selectedSheetIndex].name }}</strong>
+    </p>
+    <label class="modal-label">
+      <select [(ngModel)]="newColumnName" autofocus>
+        <option value="" disabled>Selecione um tipo</option>
+        <option *ngFor="let option of columnOptions" [value]="option">
+          {{ option }}
+        </option>
+      </select>
+    </label>
+    <p class="modal-error" *ngIf="newColumnError">{{ newColumnError }}</p>
+    <div class="modal-actions">
+      <button
+        type="button"
+        class="confirm"
+        (click)="confirmNewColumn()"
+        [disabled]="!newColumnName"
+      >
+        Adicionar
+      </button>
+      <button type="button" class="cancel" (click)="closeNewColumnModal()">
+        Cancelar
+      </button>
+    </div>
+  </div>
+</div>
