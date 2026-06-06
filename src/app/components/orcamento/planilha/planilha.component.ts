@@ -3,7 +3,7 @@ import { ColDef } from 'ag-grid-community';
 
 interface Sheet {
   name: string;
-  columnDefs: ColDef[];
+  categoryDefs: ColDef[];
   rowData: { [key: string]: any }[];
 }
 
@@ -16,81 +16,118 @@ export class PlanilhaComponent {
   sheets: Sheet[] = [
     {
       name: 'Orçamento',
-      columnDefs: [
+      categoryDefs: [
         {
           field: 'Alimentos e Bebidas',
           editable: true,
           cellStyle: this.highlightCellIfGreaterThan100.bind(this),
         },
         {
-          field: 'Hotel',
+          field: 'QTD',
+          editable: true,
+          cellStyle: this.highlightCellIfGreaterThan100.bind(this),
+        },
+        {
+          field: 'Valor',
           editable: true,
           cellStyle: this.highlightCellIfGreaterThan100.bind(this),
         },
       ],
       rowData: [
-        { 'Alimentos e Bebidas': 'Item 1', Hotel: '100' },
-        { 'Alimentos e Bebidas': 'Item 2', Hotel: '200' },
+        { 'Alimentos e Bebidas': 'Item 1', QTD: '1', Valor: '100' },
+        { 'Alimentos e Bebidas': 'Item 2', QTD: '2', Valor: '200' },
       ],
     },
     {
       name: 'Pré Evento',
-      columnDefs: [
+      categoryDefs: [
         {
           field: 'Cenografia',
           editable: true,
           cellStyle: this.highlightCellIfGreaterThan100.bind(this),
         },
         {
-          field: 'Hospedagem',
+          field: 'QTD',
+          editable: true,
+          cellStyle: this.highlightCellIfGreaterThan100.bind(this),
+        },
+        {
+          field: 'Valor',
           editable: true,
           cellStyle: this.highlightCellIfGreaterThan100.bind(this),
         },
       ],
       rowData: [
-        { Cenografia: 'Decoração', Hospedagem: '150' },
-        { Cenografia: 'Balões', Hospedagem: '80' },
+        { Cenografia: 'Decoração', QTD: '1', Valor: '150' },
+        { Cenografia: 'Balões', QTD: '2', Valor: '80' },
       ],
     },
     {
       name: 'Pós Evento',
-      columnDefs: [
+      categoryDefs: [
         {
           field: 'Aereo',
           editable: true,
           cellStyle: this.highlightCellIfGreaterThan100.bind(this),
         },
         {
-          field: 'Serviços',
+          field: 'QTD',
+          editable: true,
+          cellStyle: this.highlightCellIfGreaterThan100.bind(this),
+        },
+        {
+          field: 'Valor',
           editable: true,
           cellStyle: this.highlightCellIfGreaterThan100.bind(this),
         },
       ],
       rowData: [
-        { Aereo: 'Passagem', Serviços: '220' },
-        { Aereo: 'Bagagem', Serviços: '40' },
+        { Aereo: 'Passagem', QTD: '1', Valor: '220' },
+        { Aereo: 'Bagagem', QTD: '2', Valor: '40' },
       ],
     },
   ];
 
-  columnOptions = [
+  categoryOptions = [
     'Alimentos e Bebidas',
+    'Aéreo',
+    'Brindes',
     'Cenografia',
+    'Comunicação Visual',
+    'Decoração',
+    'Equipamentos Audiovisuais',
+    'Estrutura',
+    'Fotografia',
     'Hotel',
     'Hospedagem',
-    'Aereo',
+    'Iluminação',
+    'Infraestrutura',
+    'Locação de Espaço',
+    'Marketing',
+    'Mobiliário',
+    'Produção',
+    'Recepção',
+    'Segurança',
     'Serviços',
+    'Sonorização',
+    'Staff',
+    'Tecnologia',
+    'Transfer',
+    'Transporte',
+    'Tradução e Interpretação',
+    'Uniformes',
+    'Vídeo',
   ];
 
   selectedSheetIndex = 0;
-  isNewColumnModalOpen = false;
-  newColumnName = '';
-  newColumnError = '';
+  isNewCategoryModalOpen = false;
+  newCategoryName = '';
+  newCategoryError = '';
 
   addRow(sheet: Sheet) {
     const newRow: any = {};
 
-    sheet.columnDefs.forEach((col) => {
+    sheet.categoryDefs.forEach((col) => {
       if (col.field) {
         newRow[col.field] = '';
       }
@@ -99,83 +136,116 @@ export class PlanilhaComponent {
     sheet.rowData = [...sheet.rowData, newRow];
   }
 
-  openNewColumnModal(index: number) {
+  openNewCategoryModal(index: number) {
     this.selectedSheetIndex = index;
-    this.newColumnName = this.columnOptions[0] || '';
-    this.newColumnError = '';
-    this.isNewColumnModalOpen = true;
+    this.newCategoryName = this.categoryOptions[0] || '';
+    this.newCategoryError = '';
+    this.isNewCategoryModalOpen = true;
   }
 
-  closeNewColumnModal() {
-    this.isNewColumnModalOpen = false;
-    this.newColumnName = '';
-    this.newColumnError = '';
+  closeNewCategoryModal() {
+    this.isNewCategoryModalOpen = false;
+    this.newCategoryName = '';
+    this.newCategoryError = '';
   }
 
-  confirmNewColumn() {
-    const columnName = this.newColumnName.trim();
+  confirmNewCategory() {
+    const categoryName = this.newCategoryName.trim();
     const sheet = this.sheets[this.selectedSheetIndex];
 
-    if (!columnName) {
-      this.newColumnError = 'Informe um nome de coluna.';
+    if (!categoryName) {
+      this.newCategoryError = 'Informe um nome de categoria.';
       return;
     }
 
-    const nameAlreadyUsed = sheet.columnDefs.some(
-      (col) => col.field?.toString().toLowerCase() === columnName.toLowerCase(),
+    const nameAlreadyUsed = sheet.categoryDefs.some(
+      (col) =>
+        col.field?.toString().toLowerCase() === categoryName.toLowerCase(),
     );
 
     if (nameAlreadyUsed) {
-      this.newColumnError = 'Já existe uma coluna com este nome!';
+      this.newCategoryError = 'Já existe uma categoria com este nome!';
       return;
     }
 
-    this.addColumn(sheet, columnName);
-    this.closeNewColumnModal();
+    this.addCategory(sheet, categoryName);
+    this.closeNewCategoryModal();
   }
 
-  addColumn(sheet: Sheet, columnName: string) {
-    sheet.columnDefs = [
-      ...sheet.columnDefs,
-      {
-        field: columnName,
-        headerName: columnName,
-        editable: true,
-        cellStyle: this.highlightCellIfGreaterThan100.bind(this),
-      },
-    ];
+  addCategory(sheet: Sheet, categoryName: string) {
+    // Do not add a new column. Instead, append a header/divider row
+    // Place the category name in the first existing column so it is visible
+    const headerRow: any = {};
 
-    sheet.rowData = sheet.rowData.map((row) => ({
-      ...row,
-      [columnName]: '',
-    }));
+    if (sheet.categoryDefs.length > 0) {
+      const firstField = sheet.categoryDefs[0].field?.toString() || '';
+      sheet.categoryDefs.forEach((col) => {
+        if (col.field) {
+          headerRow[col.field.toString()] =
+            col.field === firstField ? categoryName : '';
+        }
+      });
+    } else {
+      // no columns exist: put the category into a special property so it's still trackable
+      headerRow.__category = categoryName;
+    }
+
+    headerRow.__isHeader = true;
+
+    // Append header row after existing rows
+    sheet.rowData = [...sheet.rowData, headerRow];
   }
 
   highlightCellIfGreaterThan100(params: any) {
+    // Render header rows with a distinct style
+    if (params && params.data && params.data.__isHeader) {
+      return {
+        backgroundColor: '#f3f6fb',
+        color: '#1f5a2d',
+        fontWeight: '700',
+      };
+    }
+
     const value = Number(params.value);
     if (!Number.isNaN(value) && value > 100) {
       return {
         backgroundColor: '#e5f7e5',
         color: '#1b5e20',
+        fontWeight: '400',
       };
     } else {
       return {
         backgroundColor: '#fff',
         color: '#000',
+        fontWeight: '400',
       };
     }
   }
 
-  deleteColumn(sheet: Sheet) {
-    if (sheet.columnDefs.length === 0) return;
+  deleteCategoryDef(sheet: Sheet) {
+    if (sheet.categoryDefs.length === 0) return;
 
-    const lastCol = sheet.columnDefs[sheet.columnDefs.length - 1];
-    sheet.columnDefs = sheet.columnDefs.slice(0, -1);
+    const lastCol = sheet.categoryDefs[sheet.categoryDefs.length - 1];
+    sheet.categoryDefs = sheet.categoryDefs.slice(0, -1);
 
     sheet.rowData = sheet.rowData.map((row) => {
       const { [lastCol.field!]: _, ...rest } = row;
       return rest;
     });
+  }
+
+  // Remove the last header/category row that was appended
+  deleteCategory(sheet: Sheet) {
+    for (let i = sheet.rowData.length - 1; i >= 0; i--) {
+      const row = sheet.rowData[i];
+      if (row && (row['__isHeader'] || row['__category'])) {
+        sheet.rowData = [
+          ...sheet.rowData.slice(0, i),
+          ...sheet.rowData.slice(i + 1),
+        ];
+        return;
+      }
+    }
   }
 
   deleteRow(sheet: Sheet) {
